@@ -1,0 +1,219 @@
+C
+C   SUBROUTINE MACE(P,N,X,Y,W,L,DELRSQ,NS,TX,TY,RSQ,IERR,M,Z)
+C------------------------------------------------------------------
+C
+C ESTIMATE MULTIPLE OPTIMAL TRANSFORMATIONS FOR REGRESSION AND
+C CORRELATION BY ALTERNATING CONDITIONAL EXPECTATION ESTIMATES.
+C
+C VERSION 3/28/85.
+C
+C BREIMAN AND FRIEDMAN, JOURNAL OF THE AMERICAN STATISTICAL
+C ASSOCIATION (SEPTEMBER, 1985)
+C
+C CODED  AND COPYWRITE (C) 1985 BY:
+C
+C                        JEROME H. FRIEDMAN
+C                     DEPARTMENT OF STATISTICS
+C                               AND
+C                STANFORD LINEAR ACCELERATOR CENTER
+C                        STANFORD UNIVERSITY
+C
+C ALL RIGHTS RESERVED.
+C
+C
+C INPUT:
+C
+C    N : NUMBER OF OBSERVATIONS.
+C    P : NUMBER OF PREDICTOR VARIABLES FOR EACH OBSERVATION.
+C    X(P,N) : PREDICTOR DATA MATRIX.
+C    Y(N) : RESPONSE VALUES FOR THE OBSERVATIONS.
+C       MISSING VALUES ARE SIGNIFIED BY A VALUE (RESPONSE OR
+C       PREDICTOR) GREATER THAN OR EQUAL TO BIG.
+C       (SEE BELOW - DEFAULT, BIG = 1.0E20)
+C    W(N) : WEIGHTS FOR THE OBSERVATIONS.
+C    L(P+1) : FLAG FOR EACH VARIABLE.
+C       L(1) THROUGH L(P) : PREDICTOR VARIABLES.
+C       L(P+1) : RESPONSE VARIABLE.
+C       L(I)=0 => ITH VARIABLE NOT TO BE USED.
+C       L(I)=1 => ITH VARIABLE ASSUMES ORDERABLE VALUES.
+C       L(I)=2 => ITH VARIABLE ASSUMES CIRCULAR (PERIODIC) VALUES
+C                 IN THE RANGE (0.0,1.0) WITH PERIOD 1.0.
+C       L(I)=3 => ITH VARIABLE TRANSFORMATION IS TO BE MONOTONE.
+C       L(I)=4 => ITH VARIABLE TRANSFORMATION IS TO BE LINEAR.
+C       L(I)=5 => ITH VARIABLE ASSUMES CATEGORICAL (UNORDERABLE) VALUES.
+C   DELRSQ : TERMINATION THRESHOLD. ITERATION STOPS WHEN
+C       RSQ CHANGES LESS THAN DELRSQ IN NTERM
+C       CONSECUTIVE ITERATIONS (SEE BELOW - DEFAULT, NTERM=3).
+C   NS : NUMBER OF EIGENSOLUTIONS (SETS OF TRANSFORMATIONS).
+C
+C OUTPUT:
+C
+C   TX(N,P,NS) : PREDICTOR TRANSFORMATIONS.
+C      TX(J,I,K) = TRANSFORMED VALUE OF ITH PREDICTOR FOR JTH OBS
+C                  FOR KTH EIGENSOLUTION.
+C   TY(N,NS) = RESPONSE TRANSFORMATIONS.
+C      TY(J,K) = TRANSFORMED RESPONSE VALUE FOR JTH OBSERVATION
+C                FOR KTH EIGENSOLUTION.
+C   RSQ(NS) = FRACTION OF VARIANCE(TY<Y>)
+C                       P
+C         EXPLAINED BY SUM TX(I)<X(I)>  FOR EACH EIGENSOLUTION.
+C                      I=1
+C   IERR : ERROR FLAG.
+C      IERR = 0 : NO ERRORS DETECTED.
+C      IERR > 0 : ERROR DETECTED - SEE FORMAT STATEMENTS BELOW.
+C
+C SCRATCH:
+C
+C    M(N,P+1), Z(N,12) : INTERNAL WORKING STORAGE.
+C
+C NOTE: MACE USES AN ITERATIVE PROCEDURE FOR SOLVING THE OPTIMIZATION
+C    PROBLEM. DEFAULT STARTING TRANSFORMATIONS ARE TY(J,K)=Y(J),
+C    TX(J,I,K)=X(I,J) : J=1,N, I=1,P, K=1,NS. OTHER STARTING TRANSFORMATIONS
+C    CAN BE SPECIFIED (IF DESIRED) FOR EITHER THE RESPONSE AND/OR ANY OF
+C    THE PREDICTOR VARIABLES. THIS IS SIGNALED BY NEGATING THE
+C    CORRESPONDING L(I) VALUE AND STORING THE STARTING TRANSFORMED
+C    VALUES IN THE CORRESPONDING ARRAY (TY(J,K), TX(J,I,K)) BEFORE
+C    CALLING MACE.
+C
+C------------------------------------------------------------------
+C
+
+
+C
+C          SUBROUTINE MODEL(P,N,Y,W,L,TX,TY,F,T,M,Z)
+C--------------------------------------------------------------------
+C
+C COMPUTES RESPONSE PREDICTIVE  FUNCTION F FOR THE MODEL YHAT = F(T),
+C WHERE
+C                                        P
+C            F(T) = E(Y : T),     T =   SUM  TX<I> ( X<I> )
+C                                       I=1
+C USING THE X TRANSFORMATIONS TX CONSTRUCTED BY SUBROUTINE ACE.
+C IF Y IS A CATEGORICAL VARIABLE (CLASSIFICATION) THEN
+C                                -1
+C                       F(T) = TY  (T).
+C INPUT:
+C
+C    P,N,Y,W,L : SAME INPUT AS FOR SUBROUTINE ACE.
+C    TX,TY,M,Z : OUTPUT FROM SUBROUTINE ACE.
+C
+C OUTPUT:
+C
+C    F(N),T(N) : INPUT FOR SUBROUTINE ACEMOD.
+C
+C NOTE: THIS SUBROUTINE MUST BE CALLED BEFORE SUBROUTINE ACEMOD.
+C
+C-------------------------------------------------------------------
+C
+
+
+C          SUBROUTINE ACEMOD(V,P,N,X,L,TX,F,T,M,YHAT)
+C--------------------------------------------------------------------
+C
+C COMPUTES RESPONSE Y ESTIMATES FROM THE MODEL
+C
+C                YHAT =  F ( T( V ) )
+C
+C USING THE X TRANSFORMATIONS TX CONSTRUCTED BY SUBROUTINE ACE AND
+C THE PREDICTOR FUNCTION (F,T) CONSTRUCTED BY SUBROUTINE MODEL.
+C
+C INPUT:
+C
+C       V(P) : VECTOR OF PREDICTOR VALUES.
+C    P,N,X,L : SAME INPUT AS FOR SUBROUTINE ACE.
+C       TX,M : OUTPUT FROM SUBROUTINE ACE.
+C        F,T : OUTPUT FROM SUBROUTINE MODEL.
+C
+C OUTPUT:
+C
+C    YHAT : ESTIMATED RESPONSE VALUE FOR V.
+C
+C NOTE: THIS SUBROUTINE MUST NOT BE CALLED BEFORE SUBROUTINE MODEL.
+C
+C-------------------------------------------------------------------
+C
+
+
+C
+C     BLOCK DATA
+C     COMMON /PARMS/ ITAPE,MAXIT,NTERM,SPAN,ALPHA,BIG
+C
+C------------------------------------------------------------------
+C
+C THESE PROCEDURE PARAMETERS CAN BE CHANGED IN THE CALLING ROUTINE
+C BY DEFINING THE ABOVE LABELED COMMON AND RESETTING THE VALUES WITH
+C EXECUTABLE STATEMENTS.
+C
+C ITAPE : FORTRAN FILE NUMBER FOR PRINTER OUTPUT.
+C         (ITAPE.LE.0 => NO PRINTER OUTPUT.)
+C MAXIT : MAXIMUM NUMBER OF ITERATIONS.
+C NTERM : NUMBER OF CONSECUTIVE ITERATIONS FOR WHICH
+C         RSQ MUST CHANGE LESS THAN DELCOR FOR CONVERGENCE.
+C SPAN, ALPHA : SUPER SMOOTHER PARAMETERS (SEE BELOW).
+C BIG : A LARGE REPRESENTABLE FLOATING POINT NUMBER.
+C
+C------------------------------------------------------------------
+C
+      subroutine supsmu (n,x,y,w,iper,span,alpha,smo,sc)
+
+       Note, although the following comments are extracted
+from a relatively old version, the arguements are the same
+as those in all subsequent versions.   Pat Neville, 26 Sept 85
+
+c------------------------------------------------------------------
+c
+c super smoother (friedman and stuetzle, 1984).
+c
+c version 3/10/84
+c
+c coded by: j. h. friedman
+c           department of statistics and
+c           stanford linear accelerator center
+c           stanford university
+c           stanford ca. 94305
+c
+c input:
+c    n : number of observations (x,y - pairs).
+c    x(n) : ordered abscissa values.
+c    y(n) : corresponding ordinate (response) values.
+c    w(n) : weight for each (x,y) observation.
+c    iper : periodic variable flag.
+c       iper=1 => x is ordered interval variable.
+c       iper=2 => x is a periodic variable with values
+c                 in the range (0.0,1.0) and peroid 1.0.
+c    span : smoother span (fraction of observations in window).
+c           span=0.0 => automatic (variable) span selection.
+c    alpha : controles high frequency (small span) penality
+c            used with automatic span selection (base tone control).
+c            (alpha.le.0.0 or alpha.gt.10.0 => no effect.)
+c output:
+c   smo(n) : smoothed ordinate (response) values.
+c scratch:
+c   sc(n,7) : internal working storage.
+c
+c note:
+c    for small samples (n < 40) or if there are substantial serial
+c    correlations between obserations close in x - value, then
+c    a prespecified fixed span smoother (span > 0) should be
+c    used. reasonable span values are 0.3 to 0.5.
+c
+c------------------------------------------------------------------
+
+
+
+
+      subroutine sort (v,a,ii,jj)
+c------------------------------------------------------------------
+c
+c     applies to a and v the permutation vector which sorts v into
+c     increasing order.  only elements from ii to jj are considered.
+c     arrays iu(k) and il(k) permit sorting up to 2**(k+1)-1 elements
+c
+c     this is a modification of cacm algorithm #347 by r. c. singleton,
+c     which is a modified hoare quicksort.
+c
+c------------------------------------------------------------------
+
+
+
+
