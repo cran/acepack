@@ -198,12 +198,12 @@ c
       do 300 i=1,p
       if (l(i).eq.0) go to 300
       do 290 j=1,n
-      m(j,i)=j
+      m(j,i)=j 
       z(j,2)=x(i,j)
  290  continue
       call sort (z(1,2),m(1,i),1,n)
  300  continue
- 310  call scale (p,n,w,sw,ty(1,is),tx(1,1,is),delrsq,p,z(1,5),z(1,6))
+ 310  call scail (p,n,w,sw,ty(1,is),tx(1,1,is),delrsq,p,z(1,5),z(1,6))
       rsq(is)=0.0
       iter=0
       nterm=min0(nterm,10)
@@ -533,7 +533,7 @@ c
       end
 
  
-      subroutine scale (p,n,w,sw,ty,tx,eps,maxit,r,sc)
+      subroutine scail (p,n,w,sw,ty,tx,eps,maxit,r,sc)
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       integer p
       double precision w(n),ty(n),tx(n,p),r(n),sc(p,5)
