@@ -1,5 +1,5 @@
       subroutine avas(p,n,x,y,w,l,delrsq,tx,ty,rsq,ierr,m,z,yspan,iter,
-&     iters)
+     1 iters)
       integer p,pp1,pp2,m(n,1),l(1)
       double precision y(n),x(n,p),w(n),ty(n),tx(n,p),z(n,17),ct(10)
       double precision iters(100,2), delrsq, rsq, yspan
@@ -17,7 +17,7 @@
       np = np+1
 23002 continue
 23000 continue
-      do 23004 j = 1,n 
+      do 23004 j = 1,n
       sm = sm+w(j)*y(j)
       sv = sv+w(j)*y(j)**2
       sw = sw+w(j)
@@ -38,7 +38,7 @@
       sm=sm+w(j)*x(j,i)
 23012 continue
       sm=sm/sw
-      do 23014 j = 1,n 
+      do 23014 j = 1,n
       m(j,i) = j
       z(j,2) = x(j,i)
 23014 continue
@@ -55,7 +55,7 @@
       do 23018 j=1,n
       ty(j)=z(j,1)
 23018 continue
-      do 23020 j = 1,n 
+      do 23020 j = 1,n
       z(j,9)=ty(j)
 23020 continue
       call bakfit(iter,delrsq,rsq,sw,l,z,m,x,z(1,9),tx,w,n,p,np)
@@ -66,7 +66,7 @@
       go to 992
 23025 continue
       call calcmu(n,p,l,z,tx)
-      do 23027 j=1,n 
+      do 23027 j=1,n
       tres=(ty(j)-z(j,10))
       if(.not.(abs(tres).lt.1e-10))goto 23029
       tres=1e-10
@@ -75,13 +75,13 @@
       m(j,pp2)=j
 23027 continue
       call sort(z(1,10),m(1,pp2),1,n)
-      do 23031 j=1,n 
+      do 23031 j=1,n
       k=m(j,pp2)
       z(j,4)=z(k,2)
       z(j,5)=w(k)
 23031 continue
       call rlsmo(z(1,10),z(1,4),z(1,5),yspan,dof,n,z(1,6),rss,z(1,7))
-      do 23033 j=1,n 
+      do 23033 j=1,n
       k=m(j,pp2)
       z(j,7)=exp(-z(j,6))
       sumlog=sumlog+n*(w(j)/sw)*2*z(j,6)
@@ -92,17 +92,17 @@
       do 23035 j=1,n
       sm=sm+w(j)*z(j,9)
 23035 continue
-      do 23037 j=1,n 
+      do 23037 j=1,n
       k=m(j,pp2)
       ty(k)=z(j,9)-sm/sw
 23037 continue
       sv=0
       svx=0
-      do 23039 j=1,n 
+      do 23039 j=1,n
       sv=sv+(w(j)/sw)*ty(j)*ty(j)
       svx=svx+(w(j)/sw)*z(j,10)*z(j,10)
 23039 continue
-      do 23041 j=1,n 
+      do 23041 j=1,n
       ty(j)=ty(j)/dsqrt(sv)
       do 23043 i=1,p
       if(.not.( l(i) .gt. 0))goto 23045
@@ -111,14 +111,14 @@
 23043 continue
 23041 continue
 992   continue
-      do 23047 j = 1,n 
+      do 23047 j = 1,n
       z(j,9)=ty(j)
 23047 continue
       call bakfit(iter,delrsq,rsq,sw,l,z,m,x,z(1,9),tx,w,n,p,np)
       sumlog=sumlog+n*dlog(sv)
       rr=0
       call calcmu(n,p,l,z,tx)
-      do 23049 j=1,n 
+      do 23049 j=1,n
       rr=rr+(w(j)/sw)*(ty(j)-z(j,10))**2
 23049 continue
       rsq=1-rr
@@ -129,12 +129,12 @@
       ct(nt) = rsq
       cmn = 100.0
       cmx = -100.0
-      do 23051 i = 1,nterm 
+      do 23051 i = 1,nterm
       cmn = min(cmn,ct(i))
       cmx = max(cmx,ct(i))
 23051 continue
-      if(.not.(cmx-cmn.le.delrsq.or.iter.ge.maxit.or.l(pp1).eq.4))goto 2
-&     3053
+      if(.not.(cmx-cmn.le.delrsq.or.iter.ge.maxit.or.l(pp1).eq.4))
+     1 goto 23053
       return
 23053 continue
 23023 goto 23022
@@ -143,9 +143,9 @@
       subroutine calcmu(n,p,l,z,tx)
       integer p, l(1)
       double precision z(n,17),tx(n,p)
-      do 23055 j=1,n 
+      do 23055 j=1,n
       z(j,10)=0
-      do 23057 i=1,p 
+      do 23057 i=1,p
       if(.not.(l(i) .gt. 0))goto 23059
       z(j,10)=z(j,10)+tx(j,i)
 23059 continue
@@ -168,7 +168,7 @@
       nit = nit+1
       do 23066 i = 1,p
       if(.not.(l(i).gt.0))goto 23068
-      do 23070 j = 1,n 
+      do 23070 j = 1,n
       k = m(j,i)
       z(j,1) = ty(k)+tx(k,i)
       z(j,2) = x(k,i)
@@ -189,7 +189,7 @@
 23076 continue
       sv = 1.0-sv/sw
       rsq = sv
-      do 23078 j = 1,n 
+      do 23078 j = 1,n
       k = m(j,i)
       tx(k,i) = z(j,6)
       ty(k) = z(j,1)-z(j,6)
@@ -197,7 +197,7 @@
 23068 continue
 23066 continue
 23064 if(.not.(np.eq.1.or.abs(rsq-rsqi).le.delrsq.or.nit.ge.maxit))
-&     goto 23063
+     1 goto 23063
       if(.not.(rsq.eq.0.0.and.iter.eq.0))goto 23080
       do 23082 i = 1,p
       if(.not.(l(i).gt.0))goto 23084
@@ -228,10 +228,10 @@
 23094 continue
       if(.not.(y(i).le.u(n)))goto 23097
       ty(i)=ty(i)+.5*(y(i)-u(j-1))*(2*v(j-1)+(y(i)-u(j-1))*(v(j)-v(j-1))
-&     /(u(j)-u(j-1)))
+     1 /(u(j)-u(j-1)))
       goto 23098
 23097 continue
-      ty(i)=ty(i)+(y(i)-u(n))*v(n) 
+      ty(i)=ty(i)+(y(i)-u(n))*v(n)
 23098 continue
 23092 continue
       i=i+1
