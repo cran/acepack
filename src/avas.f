@@ -552,7 +552,7 @@ c
 c------------------------------------------------------------------
       double precision x(n),y(n),w(n),smo(n),sc(n,7)
       common /spans/ spans(3) /consts/ big,sml,eps
-      double precision h
+      double precision h(1)
       if (x(n).gt.x(1)) go to 30
       sy=0.0
       sw=sy

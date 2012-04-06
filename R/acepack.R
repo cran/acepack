@@ -108,7 +108,7 @@ ace <- function (x, y, wt = rep(1, nrow(x)), cat = NULL, mon = NULL,
 avas <- function (x, y, wt = rep(1, nrow(x)), cat = NULL, mon = NULL, 
     lin = NULL, circ = NULL, delrsq = 0.01, yspan = 0) 
 {
-    x <- as.matrix(x);  print(dim(x))
+    x <- as.matrix(x);
     if (delrsq <= 0) {
         cat("delrsq must be positive")
         return()
