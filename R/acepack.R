@@ -1,111 +1,95 @@
-
-"ace"<- function(x, y, wt = rep(1, nrow(x)), cat=NULL, mon=NULL, lin=NULL, circ=NULL, delrsq = 0.01)
+ace <- function (x, y, wt = rep(1, nrow(x)), cat = NULL, mon = NULL, 
+    lin = NULL, circ = NULL, delrsq = 0.01) 
 {
     x <- as.matrix(x)
-    if(delrsq <= 0) {
+    if (delrsq <= 0) {
         cat("delrsq must be positive")
         return()
     }
     iy <- ncol(x) + 1
     l <- matrix(1, ncol = iy)
-    if(!is.null(circ)) {
-        for(i in 1:length(circ)) {
-            if(circ[i] < 0 || circ[i] > nrow(x)) {
+    if (!is.null(circ)) {
+        for (i in 1:length(circ)) {
+            if (circ[i] < 0 || circ[i] > ncol(x)) {
                 cat("bad circ= specification")
                 return()
             }
-            if(circ[i] == 0) {
-                cat(
-                    "response spec can only be lin or ordered (default)"
-                    )
-                return()
+            if (circ[i] == 0) {
+                nncol <- iy
             }
             else {
                 nncol <- circ[i]
-                if(l[nncol]!=2 & l[nncol]!=1) {
-                    cat(
-                        "conflicting transformation specifications"
-                        )
-                    return()
-                }
-                l[nncol] <- 2
             }
+            if (l[nncol] != 2 & l[nncol] != 1) {
+               cat("conflicting transformation specifications")
+               return()
+            }
+            l[nncol] <- 2
         }
     }
-    if(length(mon)) {
-        for(i in 1:length(mon)) {
-            if(mon[i] < 0 || mon[i] > nrow(x)) {
+    if (length(mon)) {
+        for (i in 1:length(mon)) {
+            if (mon[i] < 0 || mon[i] > ncol(x)) {
                 cat("bad mon= specification")
                 return()
             }
-            if(mon[i] == 0) {
-                cat(
-                    "response spec can only be lin or ordered (default)"
-                    )
-                return()
+            if (mon[i] == 0) {
+                nncol <- iy
             }
             else {
                 nncol <- mon[i]
-                if(l[nncol]!=3 && l[nncol]!=1) {
-                    cat(
-                        "conflicting transformation specifications"
-                        )
-                    return()
-                }
-                l[nncol] <- 3
             }
+            if (l[nncol] != 3 && l[nncol] != 1) {
+              cat("conflicting transformation specifications")
+              return()
+            }
+            l[nncol] <- 3
         }
     }
-    if(length(lin)) {
-        for(i in 1:length(lin)) {
-            if(lin[i] < 0 || lin[i] > nrow(x)) {
+    if (length(lin)) {
+        for (i in 1:length(lin)) {
+            if (lin[i] < 0 || lin[i] > ncol(x)) {
                 cat("bad lin= specification")
                 return()
             }
-            if(lin[i] == 0) {
+            if (lin[i] == 0) {
                 nncol <- iy
             }
             else {
                 nncol <- lin[i]
             }
-            if(l[nncol]!=4 && l[nncol]!=1) {
-                cat("conflicting transformation specifications"
-                    )
+            if (l[nncol] != 4 && l[nncol] != 1) {
+                cat("conflicting transformation specifications")
                 return()
             }
             l[nncol] <- 4
         }
     }
-    if(length(cat)) {
-        for(i in 1:length(cat)) {
-            if(cat[i] < 0 || cat[i] > nrow(x)) {
+    if (length(cat)) {
+        for (i in 1:length(cat)) {
+            if (cat[i] < 0 || cat[i] > ncol(x)) {
                 cat("bad cat= specification")
                 return()
             }
-            if(cat[i] == 0) {
-                cat(
-                    "response spec can only be lin or ordered (default)"
-                    )
-                return()
+            if (cat[i] == 0) {
+                nncol <- iy
             }
             else {
                 nncol <- cat[i]
-                if(l[nncol]!=4 && l[nncol]!=1) {
-                    cat(
-                        "conflicting transformation specifications"
-                        )
-                    return()
-                }
-                l[nncol] <- 4
             }
-		}
+            if (l[nncol] != 5 && l[nncol] != 1) {
+              cat("conflicting transformation specifications")
+              return()
+            }
+            l[nncol] <- 5
+        }
     }
     tx <- x
     ty <- y
-    m <- matrix(0, nrow = nrow(x), ncol =  iy)
+    m <- matrix(0, nrow = nrow(x), ncol = iy)
     z <- matrix(0, nrow = nrow(x), ncol = 12)
     z <- as.matrix(z)
-    ns<-1
+    ns <- 1
     mode(x) <- "double"
     mode(y) <- "double"
     mode(tx) <- "double"
@@ -113,139 +97,98 @@
     mode(wt) <- "double"
     mode(delrsq) <- "double"
     mode(z) <- "double"
-    junk <- .Fortran("mace",
-                     p=as.integer(ncol(x)),
-                     n=as.integer(nrow(x)),
-                     x=t(x),
-                     y=y,
-                     w=as.double(wt),
-                     l=as.integer(l),
-                     delrsq=delrsq,
-                     ns=as.integer(ns),
-                     tx = tx,
-                     ty = ty,
-                     rsq = double(1),
-                     ierr = integer(1),
-                     m=as.integer(m),
-                     z=z, PACKAGE="acepack"
-                     )
-    ##	return(list(x=x, y=y, tx = junk$tx, ty = junk$ty, rsq = junk$rsq, l, m))
+    junk <- .Fortran("mace", p = as.integer(ncol(x)), n = as.integer(nrow(x)), 
+        x = t(x), y = y, w = as.double(wt), l = as.integer(l), 
+        delrsq = delrsq, ns = as.integer(ns), tx = tx, ty = ty, 
+        rsq = double(1), ierr = integer(1), m = as.integer(m), 
+        z = z, PACKAGE = "acepack")
     return(junk)
 }
 
-
-avas.formula <-function(formula, data=sys.frame(sys.parent()) ,subset=NULL,weights=NULL,cat=NULL,mon=NULL,lin=NULL,circ=NULL,delrsq=0.01,yspan=0){
-    mf<-match.call()
-    mf$cat<-mf$mon<-lin<-mf$circ<-mf$delrsq<-mf$span<-NULL
-    mf[[1]]<-as.name("model.frame")
-    mf$use.data<-TRUE
-    mf<-eval(mf,sys.frame(sys.parent()))
-    y<-model.response(mf)
-    mm<-model.matrix(formula,mf)[,-1,drop=F]
-    w<-if (is.null(weights)) rep(1,nrow(mm)) else model.extract(mf,"weights")
-    avas(mm,y,w,cat,mon,lin,circ,delrsq,yspan)
-}
-
-"avas"<- function(x, y, wt = rep(1, nrow(x)), cat=NULL, mon=NULL, lin=NULL, circ=NULL, delrsq = 0.01, yspan
-                  = 0)
+avas <- function (x, y, wt = rep(1, nrow(x)), cat = NULL, mon = NULL, 
+    lin = NULL, circ = NULL, delrsq = 0.01, yspan = 0) 
 {
-    x <- as.matrix(x)
-    if(delrsq <= 0) {
+    x <- as.matrix(x);
+    if (delrsq <= 0) {
         cat("delrsq must be positive")
         return()
     }
     iy <- ncol(x) + 1
     l <- matrix(1, ncol = iy)
-    if(length(circ)) {
-        for(i in 1:length(circ)) {
-            if(circ[i] < 0 || circ[i] > nrow(x)) {
+    if (length(circ)) {
+        for (i in 1:length(circ)) {
+            if (circ[i] < 0 || circ[i] > ncol(x)) {
                 cat("bad circ= specification")
                 return()
             }
-            if(circ[i] == 0) {
-                cat(
-                    "response spec can only be lin or ordered (default)"
-                    )
-                return()
+            if (circ[i] == 0) {
+                nncol <- iy
             }
             else {
                 nncol <- circ[i]
-                if(l[nncol]!=2 & l[nncol]!=1) {
-                    cat(
-                        "conflicting transformation specifications"
-                        )
-                    return()
-                }
-                l[nncol] <- 2
             }
+            if (l[nncol] != 2 & l[nncol] != 1) {
+              cat("conflicting transformation specifications")
+              return()
+            }
+            l[nncol] <- 2
         }
     }
-    if(length(mon)) {
-        for(i in 1:length(mon)) {
-            if(mon[i] < 0 || mon[i] > nrow(x)) {
+    if (length(mon)) {
+        for (i in 1:length(mon)) {
+            if (mon[i] < 0 || mon[i] > ncol(x)) {
                 cat("bad mon= specification")
                 return()
             }
-            if(mon[i] == 0) {
-                cat(
-                    "response spec can only be lin or ordered (default)"
-                    )
-                return()
+            if (mon[i] == 0) {
+                nncol <- iy
             }
             else {
                 nncol <- mon[i]
-                if(l[nncol]!=3 && l[nncol]!=1) {
-                    cat(
-						"conflicting transformation specifications"
-                        )
-                    return()
-                }
-                l[nncol] <- 3
             }
+            if (l[nncol] != 3 && l[nncol] != 1) {
+              cat("conflicting transformation specifications")
+              return()
+            }
+            l[nncol] <- 3
         }
     }
-    if(length(lin)) {
-        for(i in 1:length(lin)) {
-            if(lin[i] < 0 || lin[i] > nrow(x)) {
+    if (length(lin)) {
+        for (i in 1:length(lin)) {
+            if (lin[i] < 0 || lin[i] > ncol(x)) {
                 cat("bad lin= specification")
                 return()
             }
-            if(lin[i] == 0) {
+            if (lin[i] == 0) {
                 nncol <- iy
             }
             else {
                 nncol <- lin[i]
             }
-            if(l[nncol]!=4 && l[nncol]!=1) {
-                cat("conflicting transformation specifications"
-                    )
+            if (l[nncol] != 4 && l[nncol] != 1) {
+                cat("conflicting transformation specifications")
                 return()
             }
             l[nncol] <- 4
         }
     }
-    if(length(cat)) {
-        for(i in 1:length(cat)) {
-            if(cat[i] < 0 || cat[i] > nrow(x)) {
+    if (length(cat)) {
+        for (i in 1:length(cat)) {
+            if (cat[i] < 0 || cat[i] > ncol(x)) {
                 cat("bad cat= specification")
                 return()
             }
-            if(cat[i] == 0) {
-                cat(
-                    "response spec can only be lin or ordered (default)"
-                    )
-                return()
+            if (cat[i] == 0) {
+                nncol <- iy
             }
             else {
                 nncol <- cat[i]
-                if(l[nncol]!=4 && l[nncol]!=1) {
-                    cat(
-                        "conflicting transformation specifications"
-                        )
-                    return()
-                }
-                l[nncol] <- 4
             }
+            if (l[nncol] != 5 && l[nncol] != 1) {
+              cat("conflicting transformation specifications")
+              return()
+            }
+            l[nncol] <- 5
         }
     }
     tx <- x
@@ -265,34 +208,11 @@ avas.formula <-function(formula, data=sys.frame(sys.parent()) ,subset=NULL,weigh
     mode(z) <- "double"
     mode(yspan) <- "double"
     mode(iters) <- "double"
-    junk <- .Fortran("avas",
-                     as.integer(ncol(x)),
-                     as.integer(nrow(x)),
-                     x,
-                     y,
-                     wt,
-                     l,
-                     delrsq,
-                     tx = tx,
-                     ty = ty,
-                     rsq = double(1),
-                     ierr = integer(1),
-                     m,
-                     z,
-                     yspan = yspan,
-                     niter = integer(1),
-                     iters = iters,PACKAGE="acepack")
-    junk$iters <- junk$iters[1:junk$niter,  ]
-    return(list(x=x, y=y, tx = junk$tx, ty = junk$ty, rsq = junk$rsq, l, m, yspan = 
-		junk$yspan, iters = junk$iters, niters = junk$niter))
+    junk <- .Fortran("avas", as.integer(ncol(x)), as.integer(nrow(x)), 
+        x, y, wt, l, delrsq, tx = tx, ty = ty, rsq = double(1), 
+        ierr = integer(1), m, z, yspan = yspan, niter = integer(1), 
+        iters = iters, PACKAGE = "acepack")
+    junk$iters <- junk$iters[1:junk$niter, ]
+    return(list(x = t(x), y = y, tx = junk$tx, ty = junk$ty, rsq = junk$rsq, 
+        l=l, m, yspan = junk$yspan, iters = junk$iters, niters = junk$niter))
 }
-
-
-
-
-
-
-
-
-
-

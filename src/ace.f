@@ -86,7 +86,7 @@ c
       double precision y(n),x(p,n),w(n),ty(n,ns),tx(n,p,ns)
       double precision z(n,12),ct(10),rsq(ns)
       double precision delrsq
-      common /prams/ itape,maxit,nterm,span,alpha,big
+      common /prams/ alpha,big,span,itape,maxit,nterm
       double precision sm,sv,sw,sw1
       ierr=0
       pp1=p+1
@@ -97,12 +97,12 @@ c
       do 10 i=1,pp1
       if (l(i).ge.-5.and.l(i).le.5) go to 10
       ierr=6
-      if (itape.gt.0) write (itape,670) i,l(i)
+c     if (itape.gt.0) write (itape,670) i,l(i)
  10   continue
       if (ierr.ne.0) return
       if (l(pp1).ne.0) go to 20
       ierr=4
-      if (itape.gt.0) write (itape,650) pp1
+c      if (itape.gt.0) write (itape,650) pp1
       return
  20   np=0
       do 30 i=1,p
@@ -110,17 +110,17 @@ c
  30   continue
       if (np.gt.0) go to 40
       ierr=5
-      if (itape.gt.0) write (itape,660) p
+c      if (itape.gt.0) write (itape,660) p
       return
  40   do 50 j=1,n
       sw=sw+w(j)
  50   continue
       if (sw.gt.0.0) go to 60
       ierr=1
-      if (itape.gt.0) write (itape,620)
+c      if (itape.gt.0) write (itape,620)
       return
  60   do 580 is=1,ns
-      if (itape.gt.0) write (itape,590) is
+c      if (itape.gt.0) write (itape,590) is
       do 70 j=1,n
       if (l(pp1).gt.0) ty(j,is)=y(j)
  70   continue
@@ -163,7 +163,7 @@ c
  180  continue
       if (sw1.gt.0.0) go to 190
       ierr=1
-      if (itape.gt.0) write (itape,620)
+c      if (itape.gt.0) write (itape,620)
       return
  190  sm=sm/sw1
       do 210 j=1,n
@@ -181,10 +181,10 @@ c
       go to 260
  230  if (l(pp1).le.0) go to 240
       ierr=2
-      if (itape.gt.0) write (itape,630)
+c      if (itape.gt.0) write (itape,630)
       go to 250
  240  ierr=3
-      if (itape.gt.0) write (itape,640) is
+c      if (itape.gt.0) write (itape,640) is
  250  return
  260  do 270 j=1,n
       ty(j,is)=ty(j,is)*sv
@@ -198,7 +198,7 @@ c
       do 300 i=1,p
       if (l(i).eq.0) go to 300
       do 290 j=1,n
-      m(j,i)=j 
+      m(j,i)=j
       z(j,2)=x(i,j)
  290  continue
       call sort (z(1,2),m(1,i),1,n)
@@ -294,7 +294,7 @@ c
       sv=1.0/dsqrt(sv)
       go to 530
  520  ierr=3
-      if (itape.gt.0) write (itape,640) is
+c      if (itape.gt.0) write (itape,640) is
       return
  530  do 540 j=1,n
       k=m(j,pp1)
@@ -305,7 +305,7 @@ c
       sv=sv+w(j)*(ty(j,is)-z(j,2))**2
  550  continue
       rsq(is)=1.0-sv/sw
-      if (itape.gt.0) write (itape,610) iter,rsq(is)
+c      if (itape.gt.0) write (itape,610) iter,rsq(is)
       nt=mod(nt,nterm)+1
       ct(nt)=rsq(is)
       cmn=100.0
@@ -316,7 +316,8 @@ c
  560  continue
       if (cmx-cmn.le.delrsq.or.iter.ge.maxit) go to 570
       go to 330
- 570  if (itape.gt.0) write (itape,600) is,rsq(is)
+c 570  if (itape.gt.0) write (itape,600) is,rsq(is)
+ 570  continue
  580  continue
       return
  590  format('0eigensolution ',i2, ':')
@@ -360,7 +361,7 @@ c-------------------------------------------------------------------
 c
       integer p,pp1,m(n,1),l(1)
       double precision y(n),w(n),tx(n,p),ty(n),f(n),t(n),z(n,12)
-      common /prams/ itape,maxit,nterm,span,alpha,big
+      common /prams/ alpha,big,span,itape,maxit,nterm
       pp1=p+1
       if (iabs(l(pp1)).ne.5) go to 20
       do 10 j=1,n
@@ -443,7 +444,7 @@ c-------------------------------------------------------------------
 c
       integer p,m(n,1),l(1),low,high,place
       double precision  v(p),x(p,n),f(n),t(n),tx(n,p), yhat
-      common /prams/ itape,maxit,nterm,span,alpha,big
+      common /prams/ alpha,big,span,itape,maxit,nterm
       th=0.0
       do 90 i=1,p
       if (l(i).eq.0) go to 90
@@ -508,7 +509,7 @@ c
       end
       block data acedata
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
-      common /prams/ itape,maxit,nterm,span,alpha,big
+      common /prams/ alpha,big,span,itape,maxit,nterm
 c
 c     block data
 c     common /prams/ itape,maxit,nterm,span,alpha,big
@@ -532,7 +533,7 @@ c
       data itape,maxit,nterm,span,alpha,big /-6,20,3,0.0,0.0,1.0e20/
       end
 
- 
+
       subroutine scail (p,n,w,sw,ty,tx,eps,maxit,r,sc)
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       integer p
@@ -606,10 +607,3 @@ c
  210  continue
       return
       end
-
-
-
-
-
-
-
