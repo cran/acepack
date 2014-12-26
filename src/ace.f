@@ -86,7 +86,7 @@ c
       double precision y(n),x(p,n),w(n),ty(n,ns),tx(n,p,ns)
       double precision z(n,12),ct(10),rsq(ns)
       double precision delrsq
-      common /prams/ alpha,big,span,itape,maxit,nterm
+      common /prams/ itape,maxit,nterm,span,alpha,big
       double precision sm,sv,sw,sw1
       ierr=0
       pp1=p+1
@@ -198,7 +198,7 @@ c
       do 300 i=1,p
       if (l(i).eq.0) go to 300
       do 290 j=1,n
-      m(j,i)=j
+      m(j,i)=j 
       z(j,2)=x(i,j)
  290  continue
       call sort (z(1,2),m(1,i),1,n)
@@ -360,7 +360,7 @@ c-------------------------------------------------------------------
 c
       integer p,pp1,m(n,1),l(1)
       double precision y(n),w(n),tx(n,p),ty(n),f(n),t(n),z(n,12)
-      common /prams/ alpha,big,span,itape,maxit,nterm
+      common /prams/ itape,maxit,nterm,span,alpha,big
       pp1=p+1
       if (iabs(l(pp1)).ne.5) go to 20
       do 10 j=1,n
@@ -443,7 +443,7 @@ c-------------------------------------------------------------------
 c
       integer p,m(n,1),l(1),low,high,place
       double precision  v(p),x(p,n),f(n),t(n),tx(n,p), yhat
-      common /prams/ alpha,big,span,itape,maxit,nterm
+      common /prams/ itape,maxit,nterm,span,alpha,big
       th=0.0
       do 90 i=1,p
       if (l(i).eq.0) go to 90
@@ -508,7 +508,7 @@ c
       end
       block data acedata
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
-      common /prams/ alpha,big,span,itape,maxit,nterm
+      common /prams/ itape,maxit,nterm,span,alpha,big
 c
 c     block data
 c     common /prams/ itape,maxit,nterm,span,alpha,big
@@ -532,7 +532,7 @@ c
       data itape,maxit,nterm,span,alpha,big /-6,20,3,0.0,0.0,1.0e20/
       end
 
-
+ 
       subroutine scail (p,n,w,sw,ty,tx,eps,maxit,r,sc)
       IMPLICIT DOUBLE PRECISION (A-H,O-Z)
       integer p
@@ -606,3 +606,10 @@ c
  210  continue
       return
       end
+
+
+
+
+
+
+
