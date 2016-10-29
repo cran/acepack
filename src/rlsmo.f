@@ -1,5 +1,8 @@
 C     MORTRAN 2.79 (RESERVED KEYWORD MACROS OF 09/28/81)
       SUBROUTINE RLSMO(X,Y,W,SPAN,DOF,N,SMO,RSS,SCRAT)
+      implicit none
+      integer  N,i,K
+      double precision PENAL
       double precision  X(N),Y(N),W(N),SMO(N),SCRAT(N)
       DOUBLE PRECISION CVRSS(6),CVSPAN(6),CVMIN, SPAN, RSS, DOF, S0
       INTEGER IDMIN
@@ -37,6 +40,7 @@ C     MORTRAN 2.79 (RESERVED KEYWORD MACROS OF 09/28/81)
       SPAN=CVSPAN(K)
 10071 CONTINUE
 10021 CONTINUE
+
       CALL SMTH(X,Y,W,SPAN,DOF,N,0,SMO,S0,RSS,SCRAT)
       DO 10111 i=1,n
       smo(i)=smo(i)+s0
@@ -46,6 +50,8 @@ C     MORTRAN 2.79 (RESERVED KEYWORD MACROS OF 09/28/81)
       END
       
       SUBROUTINE SMTH(X,Y,W,SPAN,DOF,N,CROSS,SMO,S0,RSS,SCRAT)
+      implicit none
+      integer I,IBNEW,IBOLD,IS2,ITNEW,ITOLD,J,JJ,M0,NTIE,N
       double precision  X(N),Y(N),W(N),SMO(N),SCRAT(N),RSS,SPAN
       double precision  XIN, YIN, WIN, XOUT, YOUT
       double precision  WT, ISPAN, DOF

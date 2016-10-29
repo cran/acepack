@@ -1,6 +1,6 @@
 Package: acepack
 Maintainer: Shawn Garbett <shawn.garbett@vanderbilt.edu>
-Version: 1.4.0
+Version: 1.4.1
 Author: Phil Spector, Jerome Friedman, Robert Tibshirani, Thomas Lumley, Shawn Garbett, Jonathan Baron
 Description: Two nonparametric methods for multiple regression transform selection are provided.
   The first, Alternative Conditional Expectations (ACE), 
@@ -12,11 +12,12 @@ Description: Two nonparametric methods for multiple regression transform selecti
   Also included is the Additivity Variance Stabilization (AVAS) method which works better than ACE when
   correlation is low [see Tibshirani, R.. 1986. "Estimating Transformations for Regression via Additivity
   and Variance Stabilization". Journal of the American Statistical Association. 83:394-405. 
-  <doi:10.1080/01621459.1988.10478610>].
+  <doi:10.1080/01621459.1988.10478610>]. A good introduction to these two methods is in chapter 16 of
+  Frank Harrel's "Regression Modeling Strategies" in the Springer Series in Statistics.
 Title: ACE and AVAS for Selecting Multiple Regression Transformations
 License: MIT + file LICENSE
 Suggests: testthat
-Packaged: 2016-10-20 14:40:12 UTC; garbetsp
+Packaged: 2016-10-28 15:38:59 UTC; garbetsp
 Repository: CRAN
-Date/Publication: 2016-10-20 21:59:35
+Date/Publication: 2016-10-29 00:11:52
 NeedsCompilation: yes

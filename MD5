@@ -1,8 +1,8 @@
-b34b56dcf1e5f5538da3ac39462f0634 *DESCRIPTION
+a9a80675d5c74496d65538903696164b *DESCRIPTION
 569a55756a57c156948a9449b9d41fba *LICENSE
 e649ea57e718ff01cbf8f550215b65e4 *LICENSE.note
 9fdfeb11f7ddba6f3aab9aaa6b1ac5dd *NAMESPACE
-ae0e37d5928cc73d15cd61839b5f929f *NEWS
+75eb17322fb8d77405d69cfbb45f508f *NEWS
 442dd0d76458d0eb9fac93d79a71aa08 *R/acepack.R
 f6b7e0fa54360a97e4f82e25a271facc *R/zzz.R
 c40beeade0631086674a30c40ef0db4c *inst/README
@@ -11,8 +11,8 @@ c40beeade0631086674a30c40ef0db4c *inst/README
 473d3304ffc1fec03893b0284959bd44 *inst/ace.doc
 32c7eb677067fec31ced036e516cc095 *man/ace.Rd
 5458d8ccd26dc095ab490a39ef952ed3 *man/avas.Rd
-7b90415bf006b72aff4bb5027f35112b *src/ace.f
-5f632bea761be43b2df3f19ec1875201 *src/avas.f
-32e5fbe7452a7085b2d3c8b7ded7f2a9 *src/rlsmo.f
+43d8ce1bc0056a2a92b45244b3031c27 *src/ace.f
+c7a79ac0054564890ff65378b7be2bfb *src/avas.f
+3e65c66c433b9c803dc35658469d6878 *src/rlsmo.f
 77ab40a84bd0555dd42223b3404430c3 *tests/testthat.R
 7096e3090a39b59eba220b483376198f *tests/testthat/test_transform.R
