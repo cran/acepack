@@ -1,8 +1,8 @@
-8fcb303d2c3a389365da1aebf5e77224 *DESCRIPTION
+7e04f280b91e06e94b9cdfb51837cb79 *DESCRIPTION
 cdb51e219e72a1c25b91ae23abfdafeb *LICENSE
 e649ea57e718ff01cbf8f550215b65e4 *LICENSE.note
 a20310e737e387b0a6b845438dc21f63 *NAMESPACE
-cc54c5f9d75bb162e760bf0a25345ed5 *NEWS.md
+1cd98f6ff108c6cdd27760dfb4e258c4 *NEWS.md
 d86255307418d7a426c2695ad6d3ab7b *R/ace.R
 06be3a32b8562898d5055cadcc161073 *R/avas.R
 de27edc89980d42b5a47ea5ccb8fa4ba *R/set_control.R
@@ -10,6 +10,7 @@ de27edc89980d42b5a47ea5ccb8fa4ba *R/set_control.R
 cb1fb801c1f0990e53b5c25e38ddf48b *man/ace.Rd
 9dd71b4c7066d0a53351d4306c67e53c *man/avas.Rd
 58d777b0155020d91dffa553f0d348e2 *man/set_control.Rd
+249ab9fc34b8a10cce665ce9c63b8361 *src/Makevars
 fdb3def34cf3cf2bf6da6a8e2c8ba02d *src/acedata.f90
 40466d42a1e9f11c05617a95c9f7f78e *src/acemod.f90
 cf36f35ca60a755aefacbd9d5efd6f02 *src/bakfit.f90
@@ -23,10 +24,10 @@ af1a80a1e9c4a09434de04827b36317b *src/model.f90
 1307750cd2474a02dd2e5bf53df9e720 *src/rlsmo.f90
 7ee9a8cabbe6cc0f865b56184033d764 *src/scail.f90
 9e7b1488dfe8a5c0dee908ed391d0b7a *src/smooth.f90
-ee7d032b6cb4d0b838811b7821dcc658 *src/smothr.f90
+b139dbb4a3e86bdc4209276fbbd1272d *src/smothr.f90
 448bcfd7d45626745b5e3c60d0bd2329 *src/sort.f90
 43b57d2d6c0ebf679b859b53d6a23066 *src/supersmoother.f90
-f7c633ee127c3228f55a9ee38e573fac *src/supsmu.f90
+53bb76750a51c2161968a92d97a28a1d *src/supsmu.f90
 77ab40a84bd0555dd42223b3404430c3 *tests/testthat.R
 e44ac58d9173afba3904bbea7bc93d3a *tests/testthat/test_ace.R
 1d0b8698c76ecd08ae9e0095c9055025 *tests/testthat/test_avas.R
