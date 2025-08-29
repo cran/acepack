@@ -1,9 +1,18 @@
 # *News*
 
+## 1.6.3
+
+* Fixed typo in NEWS
+
+## 1.6.2
+
+* Date 02-15-2025
+* Added better ierr handling for ace. 
+
 ## 1.6.1
 
 * Date 02-12-2025
-* [Fixed bug in weight specification when x was a vector](https:///github.com/vubiostat/acepack/issues/15)
+* [Fixed bug in weight specification when x was a vector](https://github.com/vubiostat/acepack/issues/15)
 * When ierr isn't 0 calls a function that defaults to warning.
 
 ## 1.6.0

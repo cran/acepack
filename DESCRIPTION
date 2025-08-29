@@ -1,5 +1,5 @@
 Package: acepack
-Version: 1.6.1
+Version: 1.6.3
 Authors@R: c(person(given = "Phil",
                       family = "Spector",
                       role = "aut"),
@@ -47,14 +47,15 @@ Repository: CRAN
 NeedsCompilation: yes
 RoxygenNote: 7.3.2
 Encoding: UTF-8
-Packaged: 2025-02-12 23:34:24 UTC; garbetsp
+Packaged: 2025-08-29 13:56:31 UTC; garbetsp
 Author: Phil Spector [aut],
   Jerome Friedman [aut],
   Robert Tibshirani [aut],
   Thomas Lumley [aut],
-  Shawn Garbett [cre, aut] (<https://orcid.org/0000-0003-4079-5621>),
+  Shawn Garbett [cre, aut] (ORCID:
+    <https://orcid.org/0000-0003-4079-5621>),
   Jonathan Baron [aut],
   Bernhard Klar [aut],
   Scott Chasalow [aut]
 Maintainer: Shawn Garbett <shawn.garbett@vumc.org>
-Date/Publication: 2025-02-13 05:30:10 UTC
+Date/Publication: 2025-08-29 14:30:08 UTC

@@ -3,7 +3,7 @@
 # This file is part of acepack.
 #
 # Copyright 1985,2007 Jerome H. Friedman
-# Copyright 2016,2025 Shawn Garbett, Vanderbilt University Medical Center
+# Copyright 2016,2025 Shawn Garbett, Vanderbilt University
 #
 # Permission to use, copy, modify, distribute, and sell this software and
 # its documentation for any purpose is hereby granted without fee,
@@ -282,11 +282,18 @@ ace.default  <- function(
       PACKAGE = "acepack"),
     class=c("ace","list"))
   
-  if(results$ierr != 0) ace_error(results$ierr, on.error)
+  if(results$ierr != 0)
+  {
+    ace_error(results$ierr, on.error)
   
-  # Find original R^2
-  results$orig_rsq <- summary(lm(results$y ~ t(results$x)))$r.squared
-
+    results$rsq      <- NA
+    results$orig_rsq <- NA
+  } else
+  {
+    # Find original R^2
+    results$orig_rsq <- summary(lm(results$y ~ t(results$x)))$r.squared
+  }
+  
   results
 }
 
